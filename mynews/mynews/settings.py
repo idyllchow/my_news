@@ -64,9 +64,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'mynews.pipelines.MynewsPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'mynews.pipelines.MynewsPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -88,3 +88,23 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+
+USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:7.0.1) Gecko/20100101 Firefox/7.7'
+
+DOWNLOAD_TIMEOUT = 15
+
+# 开启图片管道
+ITEM_PIPELINES = {'scrapy.contrib.pipeline.images.ImagesPipeline': 1}
+# IMAGES_STORE = '/path/to/valid/dir'
+# 90天的图片失效期限
+IMAGES_EXPIRES = 90
+IMAGES_THUMBS = {
+    'small': (50, 50),
+    'big': (270, 270),
+}
+
+MONGODB_SERVER = 'localhost'
+MONGODB_PORT = 27017
+MONGODB_DB = 'news'
+MONGODB_COLLECTION = 'ny_news'
