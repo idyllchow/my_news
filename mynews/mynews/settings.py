@@ -62,12 +62,29 @@ ROBOTSTXT_OBEY = True
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
 
+USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:7.0.1) Gecko/20100101 Firefox/7.7'
+
+DOWNLOAD_TIMEOUT = 15
+
+# 开启图片管道
+ITEM_PIPELINES = {'scrapy.contrib.pipeline.images.ImagesPipeline': 1}
+# IMAGES_STORE = '/path/to/valid/dir'
+# 90天的图片失效期限
+IMAGES_EXPIRES = 90
+IMAGES_THUMBS = {
+    'small': (50, 50),
+    'big': (270, 270)
+}
+
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'mynews.pipelines.MynewsPipeline': 300,
 }
-
+MONGODB_SERVER = 'localhost'
+MONGODB_PORT = 27017
+MONGODB_DB = 'news'
+MONGODB_COLLECTION = 'ny_news'
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
@@ -90,21 +107,5 @@ ITEM_PIPELINES = {
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 
-USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:7.0.1) Gecko/20100101 Firefox/7.7'
 
-DOWNLOAD_TIMEOUT = 15
 
-# 开启图片管道
-ITEM_PIPELINES = {'scrapy.contrib.pipeline.images.ImagesPipeline': 1}
-# IMAGES_STORE = '/path/to/valid/dir'
-# 90天的图片失效期限
-IMAGES_EXPIRES = 90
-IMAGES_THUMBS = {
-    'small': (50, 50),
-    'big': (270, 270),
-}
-
-MONGODB_SERVER = 'localhost'
-MONGODB_PORT = 27017
-MONGODB_DB = 'news'
-MONGODB_COLLECTION = 'ny_news'

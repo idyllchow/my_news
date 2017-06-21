@@ -6,41 +6,64 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import pymongo
 import scrapy
+import json
+
 from scrapy.exceptions import DropItem
 from scrapy.pipelines.images import ImagesPipeline
 
-from mynews.mynews import settings
-
 
 class MynewsPipeline(object):
+    # 连接数据库
+    # def __init__(self):
+    #     print("###############################")
+    #     connection = pymongo.connection(settings['MONGODB_SERVER'], settings['MONGODB_PORT'])
+    #     #数据库
+    #     db = connection[settings['MONGODB_DB']]
+    #     # self.table = db[settings['MONGODB_TABLE']]
+    #     self.connection=db[settings['MONGODB_CONNECTION']]
+    #
+    # def process_item(self, item, spider):
+    #     print("###########process_item########")
+    #     valid = True
+    #     for data in item:
+    #         if not data:
+    #             valid = False
+    #             raise DropItem('Missing{0}!'.format(data))
+    #     if valid:
+    #         self.connection.insert(dict(item))
+    #     return item
 
-    #连接数据库
-    def __init__(self):
-        connection = pymongo.MongoClient(settings['MONGODB_SERVER'], settings['MONGODB_PORT'])
+    collection_name = 'scrapy_items'
 
-        #数据库
-        db = connection[settings['MONGODB_DB']]
-        # self.table = db[settings['MONGODB_TABLE']]
-        self.connection=db[settings['MONGODB_CONNECTION']]
+    def __init__(self, mongo_uri, mongo_db):
+        self.mongo_uri = mongo_uri
+        self.mongo_db = mongo_db
 
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(
+            mongo_uri=crawler.settings.get('MONGO_URI'),
+            mongo_db=crawler.settings.get('MONGO_DATABASE', 'news_items')
+        )
+
+    def open_spider(self, spider):
+        self.client = pymongo.MongoClient(self.mongo_uri)
+        self.db = self.client[self.mongo_db]
+
+    def close_spider(self, spider):
+        self.client.close()
 
     def process_item(self, item, spider):
-        print("###########process_item########")
-        valid = True
-        for data in item:
-            if not data:
-                valid = False
-                raise DropItem('Missing{0}!'.format(data))
-        if valid:
-            self.connection.insert(dict(item))
+        # 有内容则插入数据库
+        if item['content'] is not None:
+            self.db[self.collection_name].insert_one(dict(item))
         return item
 
-class MyImagesPipeline(ImagesPipeline):
 
+class MyImagesPipeline(ImagesPipeline):
     def get_media_requests(self, item, info):
         for image_url in item['image_urls']:
             yield scrapy.Request(image_url)
-
 
     def item_completed(self, results, item, info):
         image_paths = [x['path'] for ok, x in results if ok]
