@@ -76,6 +76,10 @@ IMAGES_THUMBS = {
     'big': (270, 270)
 }
 
+#Avoid <urlopen error timed out>
+AWS_ACCESS_KEY_ID = ""
+AWS_SECRET_ACCESS_KEY = ""
+
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
