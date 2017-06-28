@@ -33,7 +33,7 @@ class MynewsPipeline(object):
     #         self.connection.insert(dict(item))
     #     return item
 
-    collection_name = 'scrapy_items'
+    collection_content_name = 'news_content'
 
     def __init__(self, mongo_uri, mongo_db):
         self.mongo_uri = mongo_uri
@@ -43,7 +43,7 @@ class MynewsPipeline(object):
     def from_crawler(cls, crawler):
         return cls(
             mongo_uri=crawler.settings.get('MONGO_URI'),
-            mongo_db=crawler.settings.get('MONGO_DATABASE', 'news_items')
+            mongo_db=crawler.settings.get('MONGO_DATABASE', 'my_news')
         )
 
     def open_spider(self, spider):
@@ -56,7 +56,7 @@ class MynewsPipeline(object):
     def process_item(self, item, spider):
         # 有内容则插入数据库
         if item['content'] is not None:
-            self.db[self.collection_name].insert_one(dict(item))
+            self.db[self.collection_content_name].insert_one(dict(item))
         return item
 
 

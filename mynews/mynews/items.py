@@ -23,6 +23,7 @@ class MynewsItem(scrapy.Item):
     image_urls = scrapy.Field()
     images = scrapy.Field()
 
+
 class NYItemLoader(ItemLoader):
     default_item_class = MynewsItem
     default_output_processor = Identity()
