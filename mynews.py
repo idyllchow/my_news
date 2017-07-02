@@ -1,13 +1,15 @@
 import pymongo
 from bson import json_util
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_pymongo import PyMongo
 import json
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
 mongo = PyMongo(app)
 
 collection_name = 'scrapy_items'
+table_name = 'news_content'
 
 
 def __init__(self, mongo_uri, mongo_db):
@@ -33,7 +35,7 @@ def to_json(data):
 @app.route('/news/title', methods=['GET'])
 def get_news_title():
     if request.method == 'GET':
-        results = db['news_content'].find({}, {"title" : 1})
+        results = db['news_content'].find({}, {'title': 1})
         json_results = []
         for result in results:
             json_results.append(result)
@@ -49,6 +51,24 @@ def get_news():
         for result in results:
             json_results.append(result)
         return to_json(json_results)
+
+
+@app.route('/title/single_news', methods=['GET'])
+def get_single_news_title():
+    if request.method == 'GET':
+        title = request.args.get('title')
+        result = db['news_content'].find({'title': title})
+        return str(json_util.dumps(result))
+
+
+@app.route('/single_news', methods=['GET'])
+def get_single_news():
+    if request.method == 'GET':
+        object_id = ObjectId(request.args.get('id'))
+        result = db['news_content'].find({'_id': object_id})
+        # cover_result = json_util.dumps(result)
+        # import pdb; pdb.set_trace()
+        return json_util.dumps(result)
 
 
 if __name__ == '__main__':
