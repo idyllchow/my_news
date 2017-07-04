@@ -18,12 +18,13 @@ def __init__(self, mongo_uri, mongo_db):
     self.mongo_db = mongo_db
 
 
-MONGO_URI = os.environ.get('MONGO_URI')
-if not MONGO_URI:
+MONGODB_URI = os.environ.get('MONGODB_URI')
+if not MONGODB_URI:
     mongoClient = pymongo.MongoClient('localhost', 27017)
 else:
-    mongoClient = pymongo.MongoClient(MONGO_URI)
+    mongoClient = pymongo.MongoClient(MONGODB_URI)
 db = mongoClient['my_news']
+
 
 def to_json(data):
     return json.dumps(data, default=json_util.default)
