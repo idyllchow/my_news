@@ -1,1 +1,1 @@
-web: gunicorn mynews:app --log-file -
+web: gunicorn news:app --log-file -
