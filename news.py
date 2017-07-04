@@ -10,7 +10,7 @@ app = Flask(__name__)
 mongo = PyMongo(app)
 
 collection_name = 'scrapy_items'
-table_name = 'news_content'
+# table_name = 'news_content'
 
 
 def __init__(self, mongo_uri, mongo_db):
