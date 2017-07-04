@@ -1,5 +1,5 @@
 import os
-import pymongo
+from pymongo import MongoClient
 from bson import json_util
 from flask import Flask, request, jsonify
 from flask_pymongo import PyMongo
@@ -20,11 +20,10 @@ def __init__(self, mongo_uri, mongo_db):
 
 MONGODB_URI = os.environ.get('MONGODB_URI')
 if not MONGODB_URI:
-    mongoClient = pymongo.MongoClient('localhost', 27017)
+    mongoClient = MongoClient('localhost', 27017)
     db = mongoClient['my_news']
 else:
-    mongoClient = pymongo.MongoClient(MONGODB_URI)
-    db = mongoClient(MONGODB_URI)
+    db = MongoClient(MONGODB_URI)['my_news']
 
 
 def to_json(data):
