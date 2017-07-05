@@ -7,6 +7,7 @@ import json
 from bson.objectid import ObjectId
 
 app = Flask(__name__)
+print('app path: %s' % app)
 mongo = PyMongo(app)
 
 db_name = 'news_items'
