@@ -10,7 +10,7 @@ app = Flask(__name__)
 mongo = PyMongo(app)
 
 collection_name = 'scrapy_items'
-# table_name = 'news_content'
+table_name = 'scrapy_items'
 
 
 def __init__(self, mongo_uri, mongo_db):
@@ -40,7 +40,7 @@ def to_json(data):
 @app.route('/news/title', methods=['GET'])
 def get_news_title():
     if request.method == 'GET':
-        results = db['news_content'].find({}, {'title': 1})
+        results = db[table_name].find({}, {'title': 1})
         json_results = []
         for result in results:
             json_results.append(result)
@@ -50,7 +50,7 @@ def get_news_title():
 @app.route('/news', methods=['GET'])
 def get_news():
     if request.method == 'GET':
-        results = db['news_content'].find()
+        results = db[table_name].find()
         json_results = []
         print('======result=====%s' % db)
         for result in results:
@@ -62,7 +62,7 @@ def get_news():
 def get_single_news_title():
     if request.method == 'GET':
         title = request.args.get('title')
-        result = db['news_content'].find({'title': title})
+        result = db[table_name].find({'title': title})
         return str(json_util.dumps(result))
 
 
@@ -70,7 +70,7 @@ def get_single_news_title():
 def get_single_news():
     if request.method == 'GET':
         object_id = ObjectId(request.args.get('id'))
-        result = db['news_content'].find({'_id': object_id})
+        result = db[table_name].find({'_id': object_id})
         # cover_result = json_util.dumps(result)
         # import pdb; pdb.set_trace()
         return json_util.dumps(result)
