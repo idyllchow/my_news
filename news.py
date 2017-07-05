@@ -9,7 +9,7 @@ from bson.objectid import ObjectId
 app = Flask(__name__)
 mongo = PyMongo(app)
 
-collection_name = 'scrapy_items'
+db_name = 'news_items'
 table_name = 'scrapy_items'
 
 
@@ -21,9 +21,9 @@ def __init__(self, mongo_uri, mongo_db):
 MONGODB_URI = os.environ.get('MONGODB_URI')
 if not MONGODB_URI:
     mongoClient = MongoClient('localhost', 27017)
-    db = mongoClient['my_news']
+    db = mongoClient[db_name]
 else:
-    db = MongoClient(MONGODB_URI)['my_news']
+    db = MongoClient(MONGODB_URI)[db_name]
 
 
 def to_json(data):
