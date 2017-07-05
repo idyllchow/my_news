@@ -85,10 +85,13 @@ AWS_SECRET_ACCESS_KEY = ""
 ITEM_PIPELINES = {
    'mynews.pipelines.MynewsPipeline': 300,
 }
-MONGODB_SERVER = 'localhost'
-MONGODB_PORT = 27017
-MONGODB_DB = 'news'
-MONGODB_COLLECTION = 'ny_news'
+
+
+# MONGODB_SERVER = 'localhost'
+# MONGODB_PORT = 27017
+# MONGODB_DB = 'news'
+# MONGODB_COLLECTION = 'ny_news'
+
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True

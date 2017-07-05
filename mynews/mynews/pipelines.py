@@ -7,6 +7,7 @@
 import pymongo
 import scrapy
 import json
+import os
 
 from scrapy.exceptions import DropItem
 from scrapy.pipelines.images import ImagesPipeline
@@ -34,6 +35,7 @@ class MynewsPipeline(object):
     #     return item
 
     collection_content_name = 'news_content'
+    db_name = 'my_news'
 
     def __init__(self, mongo_uri, mongo_db):
         self.mongo_uri = mongo_uri
@@ -41,10 +43,20 @@ class MynewsPipeline(object):
 
     @classmethod
     def from_crawler(cls, crawler):
-        return cls(
-            mongo_uri=crawler.settings.get('MONGO_URI'),
-            mongo_db=crawler.settings.get('MONGO_DATABASE', 'my_news')
-        )
+        MONGODB_URI = os.environ.get('MONGODB_URI')
+        if not MONGODB_URI:
+            print('================not mongo uri==============')
+            return cls(
+                mongo_uri=crawler.settings.get('MONGO_URI'),
+                mongo_db=crawler.settings.get('MONGO_DATABASE', cls.db_name)
+            )
+        else:
+            print('================has mongo uri==============')
+            return cls(
+                mongo_uri=crawler.settings.get(MONGODB_URI),
+                mongo_db=crawler.settings.get('MONGO_DATABASE', cls.db_name)
+            )
+
 
     def open_spider(self, spider):
         self.client = pymongo.MongoClient(self.mongo_uri)

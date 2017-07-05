@@ -10,8 +10,8 @@ app = Flask(__name__)
 print('app path: %s' % app)
 mongo = PyMongo(app)
 
-db_name = 'news_items'
-table_name = 'scrapy_items'
+db_name = 'my_news'
+table_name = 'news_content'
 
 
 def __init__(self, mongo_uri, mongo_db):
